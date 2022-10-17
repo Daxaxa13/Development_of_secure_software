@@ -1,16 +1,15 @@
+import itertools
+import multiprocessing
 import os
 import string
 import time
-import string
-import multiprocessing
 from hashlib import sha256, md5
-import itertools
-
 
 HASH_TYPES = {
     'sha256': lambda str_password: sha256(str_password.encode('utf-8')).hexdigest(),
     'md5': lambda str_password: md5(str_password.encode('utf-8')).hexdigest(),
 }
+
 
 def brute(list_first_symbol, hashes, hash_type):
     data = string.ascii_lowercase
@@ -22,7 +21,8 @@ def brute(list_first_symbol, hashes, hash_type):
         if sha_code in hashes:
             t_end_pass = time.perf_counter()
             t_calculation_pass = t_end_pass - t_start_pass
-            print(f'{multiprocessing.current_process().name} ({list_first_symbol})\n\tХэш-значенияи {hash_type}:{sha_code}\n\tПароль: {str_password}\n\tВремя: {t_calculation_pass}')
+            print(
+                f'{multiprocessing.current_process().name} ({list_first_symbol})\n\tХэш-значенияи {hash_type}:{sha_code}\n\tПароль: {str_password}\n\tВремя: {t_calculation_pass}')
 
 
 def run_bruteforce(hash_type, file_name):
@@ -30,16 +30,15 @@ def run_bruteforce(hash_type, file_name):
         all_hash_sha265 = [line.strip() for line in file]
 
     max_num_of_processes = os.cpu_count()
-    num_of_processes = max_num_of_processes
-    # while True:
-    #     try:
-    #         num_of_processes = int(
-    #             input(f"Укажите целое количество потоков в диапазоне от 1 до {max_num_of_processes}: "))
-    #         if 1 <= num_of_processes <= max_num_of_processes:
-    #             break
-    #         print("Введено недопустимое количество потоков")
-    #     except ValueError:
-    #         print("Введено не число / не целое число")
+    while True:
+        try:
+            num_of_processes = int(
+                input(f"Укажите целое количество потоков в диапазоне от 1 до {max_num_of_processes}: "))
+            if 1 <= num_of_processes <= max_num_of_processes:
+                break
+            print("Введено недопустимое количество потоков")
+        except ValueError:
+            print("Введено не число / не целое число")
 
     size_block = len(string.ascii_lowercase) // num_of_processes
     num_max_block = len(string.ascii_lowercase) % num_of_processes
@@ -74,7 +73,6 @@ if __name__ == "__main__":
 
     run_bruteforce('sha256',
                    "hash_functions_sha256.txt")
-
 
     print('\n\nПоиск для метода md5')
     run_bruteforce('md5',
