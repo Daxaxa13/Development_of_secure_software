@@ -33,8 +33,8 @@ def run_bruteforce(hash_type, file_name):
     while True:
         try:
             num_of_processes = int(
-                input(f"Укажите целое количество потоков в диапазоне от 1 до {max_num_of_processes}: "))
-            if 1 <= num_of_processes <= max_num_of_processes:
+                input(f"Рекомендуемое количество потоков от 1 до {max_num_of_processes}\nВведите количество потоков от 1 до 26: "))
+            if 1 <= num_of_processes <= 26:
                 break
             print("Введено недопустимое количество потоков")
         except ValueError:
@@ -47,7 +47,6 @@ def run_bruteforce(hash_type, file_name):
 
     processes = []
     for np in range(num_of_processes):
-
         if np < num_max_block:
             list_first_symbol = string.ascii_lowercase[(size_block + 1) * np: (size_block + 1) * (np + 1)]
         else:
@@ -69,11 +68,11 @@ def run_bruteforce(hash_type, file_name):
 
 
 if __name__ == "__main__":
-    print('Поиск для метода sha256')
+    print('SHA256')
 
     run_bruteforce('sha256',
                    "hash_functions_sha256.txt")
 
-    print('\n\nПоиск для метода md5')
+    print('\n\nMD5')
     run_bruteforce('md5',
                    "hash_functions_md5.txt")
